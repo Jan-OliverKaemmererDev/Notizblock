@@ -28,8 +28,28 @@ function getNoteTamplate(note) {
     return `<p>+ ${note}</p>`;
 }
 
+// 5. notizen hinzufügen
+// Eingabe vom User definieren:
+// Funktion addNote wird aufgerufen, wenn der User auf den Button "Notiz speichern" klickt.
+function addNote() {
+    let noteInputRef = document.getElementById('note_input'); // Die Variable noteInputRef bekommt das Input-Feld mit der id "note_input"
+    // Eingabe auslesen:
+    let noteInput = noteInputRef.value; // Die Variable noteInput bekommt den Wert des Input-Felds durch .value
+    // Referenzen zu den HTML-Elementen und das was man dann damit maccht, sollte man voneinander trennen.
 
-// notizen hinzufügen
+    // Eingabe speichern (den array notes hinzufügen):
+    notes.push(noteInput); // Die Eingabe wird dem Array notes hinzugefügt.
+
+    // Eingabe anzeigen lassen:
+    renderNotes(); // Die Funktion renderNotes() wird aufgerufen, damit die neue Notiz angezeigt wird.
+
+    noteInputRef.value = ""; // Das Input-Feld wird geleert, damit der User eine neue Notiz eingeben kann.
+}
+
+
+
+
+
 
 // notizen löschen
 
