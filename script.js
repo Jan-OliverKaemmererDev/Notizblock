@@ -2,6 +2,9 @@
 // 1. Ich brauche Notizen.
 let notes = ['banana', 'rasen mähen'];
 
+// Papierkorb für gelöschte Notizen
+let trashNotes = [];
+
 // 2. Wann werden sie angezeigt?
 function renderNotes() { // WANN? renderNotes() wird am Anfang mit onload im body-Tag aufgerufen.
 // 3. Ich muss definieren, wo sie anzuzeigen sind.
@@ -20,14 +23,33 @@ for (let indexNote = 0; indexNote < notes.length; indexNote++) {
     contentRef.innerHTML += getNoteTamplate(indexNote);
 }
 }
+
+// Papierkorb Bereich
+// Funktion zum Rendern der gelöschten Notizen im Papierkorb
+function renderTrashNotes() {
+    let trashContentRef = document.getElementById('trash_content'); // Referenz zum div mit der id "trash_content"
+    // Den Inhalt des divs mit der id "trash_content" leeren
+    trashContentRef.innerHTML = "";
+
+    for (let indexTrashNote = 0; indexTrashNote < trashNotes.length; indexTrashNote++) {
+        trashContentRef.innerHTML += getTrashNoteTemplate(indexTrashNote);
+    }
+}
+
+
 // 4. Wie werden sie angezeigt?
 // Die Funktion getNoteTemplate bekommt eine Variable note übergeben und gibt einen HTML-String zurück.
 function getNoteTamplate(indexNote) {
     // Der HTML-String wird zurückgegeben:
     // Der Wert der Notiz wird aus dem array notes mit dem übergebenen indexNote ausgelesen.
-    // Ein button mit onclick wurde hinzugefügt, der die Funktion deleteNote mit dem index der Notiz aufruft.
+    // Ein button mit onclick wurde hinzugefügt, der die Funktion pushToTrash mit dem index der Notiz aufruft.
     // Beim Klicken auf den Button wird die entsprechende Notiz gelöscht.
-    return `<p>+ ${notes[indexNote]}<button onclick="deleteNote(${indexNote})">X</button></p>`; // Ein button mit X wurde hinzugefügt, um die Notiz zu löschen.
+    return `<p>+ ${notes[indexNote]}<button onclick="pushToTrash(${indexNote})">X</button></p>`; // Ein button mit X wurde hinzugefügt, um die Notiz zu löschen.
+}
+
+// Funktion zum Generieren des HTML-Strings für eine gelöschte Notiz im Papierkorb
+function getTrashNoteTemplate(indexTrashNote) {
+    return `<p>+ ${trashNotes[indexTrashNote]}<button onclick="pushToTrash(${indexTrashNote})">X</button></p>`;
 }
 
 // 5. notizen hinzufügen
@@ -51,16 +73,23 @@ function addNote() {
 // 6. notizen löschen
 // Funktion deleteNote wird aufgerufen, wenn der User eine Notiz löschen möchte.
 // Der Funktion wird der Index der zu löschenden Notiz übergeben.
-function deleteNote(indexNote) {
+function pushToTrash(indexNote) {
     // Notiz aus dem array notes mit splice löschen:
     // splice(index, anzahl der zu löschenden einträge)
-    notes.splice(indexNote, 1);
+    let trashNote = notes.splice(indexNote, 1); // Ich splice die Notiz aus dem array notes und speichere sie in der Variable trashNote.
+    trashNotes.push(trashNote); // Die gelöschte Notiz wird dem array trashNotes hinzugefügt.
 
     // Eingabe anzeigen lassen:
     renderNotes(); // Die Funktion renderNotes() wird aufgerufen, damit die gelöschte Notiz nicht mehr angezeigt wird.
+    renderTrashNotes(); // Die Funktion renderTrashNotes() wird aufgerufen, damit die gelöschte Notiz im Papierkorb angezeigt wird.
 }
 
-
+// Notiz endgültig löschen
+function deleteTrashNote(indexTrashNote) {
+    trashNotes.splice(indexTrashNote, 1); // Ich splice die Notiz aus dem array trashNotes.
+    renderNotes(); // Die Funktion renderNotes() wird aufgerufen, damit die Notiz nicht mehr im normalen Notizenbereich angezeigt wird.
+    renderTrashNotes(); // Die Funktion renderTrashNotes() wird aufgerufen, damit die Notiz nicht mehr im Papierkorb angezeigt wird.
+}
 
 
 
