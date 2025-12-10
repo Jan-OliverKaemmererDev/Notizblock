@@ -1,7 +1,9 @@
 // notizen erstellen und anzeigen lassen
 // 1. Ich brauche Notizen.
+let notesTitles = ['Ba', 'Aufgabe']; // Titel der Notizen
 let notes = ['banana', 'rasen mähen'];
 
+let trashNotesTitle = []; // Titel der gelöschten Notizen
 // Papierkorb für gelöschte Notizen
 let trashNotes = [];
 
@@ -44,12 +46,12 @@ function getNoteTamplate(indexNote) {
     // Der Wert der Notiz wird aus dem array notes mit dem übergebenen indexNote ausgelesen.
     // Ein button mit onclick wurde hinzugefügt, der die Funktion pushToTrash mit dem index der Notiz aufruft.
     // Beim Klicken auf den Button wird die entsprechende Notiz gelöscht.
-    return `<p>+ ${notes[indexNote]}<button onclick="pushToTrash(${indexNote})">X</button></p>`; // Ein button mit X wurde hinzugefügt, um die Notiz zu löschen.
+    return `<p>+ title: ${notesTitles[indexNote]} -> ${notes[indexNote]}<button onclick="pushToTrash(${indexNote})">X</button></p>`; // Ein button mit X wurde hinzugefügt, um die Notiz zu löschen.
 }
 
 // Funktion zum Generieren des HTML-Strings für eine gelöschte Notiz im Papierkorb
 function getTrashNoteTemplate(indexTrashNote) {
-    return `<p>+ ${trashNotes[indexTrashNote]}<button onclick="deleteTrashNote(${indexTrashNote})">X</button></p>`;
+    return `<p>+ title: ${trashNotesTitle[indexTrashNote]} -> ${trashNotes[indexTrashNote]}<button onclick="deleteTrashNote(${indexTrashNote})">X</button></p>`;
 }
 
 // 5. notizen hinzufügen
@@ -78,6 +80,8 @@ function pushToTrash(indexNote) {
     // splice(index, anzahl der zu löschenden einträge)
     let trashNote = notes.splice(indexNote, 1); // Ich splice die Notiz aus dem array notes und speichere sie in der Variable trashNote.
     trashNotes.push(trashNote); // Die gelöschte Notiz wird dem array trashNotes hinzugefügt.
+    let trashNoteTitle = notesTitles.splice(indexNote, 1);
+    trashNotes.push(trashNoteTitle); // Die gelöschte Notiz wird dem array trashNotes hinzugefügt.
 
     // Eingabe anzeigen lassen:
     renderNotes(); // Die Funktion renderNotes() wird aufgerufen, damit die gelöschte Notiz nicht mehr angezeigt wird.
