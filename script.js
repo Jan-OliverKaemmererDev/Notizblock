@@ -49,7 +49,7 @@ function getNoteTamplate(indexNote) {
 
 // Funktion zum Generieren des HTML-Strings für eine gelöschte Notiz im Papierkorb
 function getTrashNoteTemplate(indexTrashNote) {
-    return `<p>+ ${trashNotes[indexTrashNote]}<button onclick="pushToTrash(${indexTrashNote})">X</button></p>`;
+    return `<p>+ ${trashNotes[indexTrashNote]}<button onclick="deleteTrashNote(${indexTrashNote})">X</button></p>`;
 }
 
 // 5. notizen hinzufügen
@@ -87,7 +87,6 @@ function pushToTrash(indexNote) {
 // Notiz endgültig löschen
 function deleteTrashNote(indexTrashNote) {
     trashNotes.splice(indexTrashNote, 1); // Ich splice die Notiz aus dem array trashNotes.
-    renderNotes(); // Die Funktion renderNotes() wird aufgerufen, damit die Notiz nicht mehr im normalen Notizenbereich angezeigt wird.
     renderTrashNotes(); // Die Funktion renderTrashNotes() wird aufgerufen, damit die Notiz nicht mehr im Papierkorb angezeigt wird.
 }
 
