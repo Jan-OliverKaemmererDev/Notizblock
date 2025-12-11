@@ -1,11 +1,20 @@
 // notizen erstellen und anzeigen lassen
 // 1. Ich brauche Notizen.
-let notesTitles = ['Ba', 'Aufgabe']; // Titel der Notizen
-let notes = ['banana', 'rasen mähen'];
+let notesTitles = []; // Titel der Notizen
+let notes = []; // Notizen
 
 let trashNotesTitles = []; // Titel der gelöschten Notizen
 // Papierkorb für gelöschte Notizen
 let trashNotes = [];
+
+function renderNotesTitles() {
+    let contentRef = document.getElementById('content');
+    contentRef.innerHTML = "";
+
+    for (let indexNotesTitels = 0; indexNotesTitels < notesTitles.length; indexNotesTitels++) {
+        contentRef.innerHTML += getNoteTamplate(indexNotesTitels);
+    }
+}
 
 // 2. Wann werden sie angezeigt?
 function renderNotes() { // WANN? renderNotes() wird am Anfang mit onload im body-Tag aufgerufen.
@@ -23,6 +32,7 @@ for (let indexNote = 0; indexNote < notes.length; indexNote++) {
     // Der Inhalt des divs mit der id "content" wird um den Wert der Variable note erweitert
     // Dazu wird die Funktion getNoteTemplate aufgerufen, der die Variable note übergeben wird.
     contentRef.innerHTML += getNoteTamplate(indexNote);
+// Notizen im localStorage speichern
 }
 }
 
@@ -58,6 +68,12 @@ function getTrashNoteTemplate(indexTrashNote) {
 // Eingabe vom User definieren:
 // Funktion addNote wird aufgerufen, wenn der User auf den Button "Notiz speichern" klickt.
 function addNote() {
+    let titleInputRef = document.getElementById('title_input'); // Die Variable titleInputRef bekommt das Input-Feld mit der id "title_input"
+    // Eingabe auslesen:
+    let titleInput = titleInputRef.value; // Die Variable titleInput bekommt den Wert des Input-Felds durch .value
+    notesTitles.push(titleInput); // Die Eingabe wird dem Array notesTitles hinzugefügt.
+    titleInputRef.value = ""; // Das Input-Feld des Titels wird geleert, damit der User einen neuen Titel eingeben kann.
+    
     let noteInputRef = document.getElementById('note_input'); // Die Variable noteInputRef bekommt das Input-Feld mit der id "note_input"
     // Eingabe auslesen:
     let noteInput = noteInputRef.value; // Die Variable noteInput bekommt den Wert des Input-Felds durch .value
@@ -67,10 +83,36 @@ function addNote() {
     notes.push(noteInput); // Die Eingabe wird dem Array notes hinzugefügt.
 
     // Eingabe anzeigen lassen:
+    renderNotesTitles(); // Die Funktion renderNotesTitles() wird aufgerufen, damit der Titel der neuen Notiz angezeigt wird.
     renderNotes(); // Die Funktion renderNotes() wird aufgerufen, damit die neue Notiz angezeigt wird.
 
     noteInputRef.value = ""; // Das Input-Feld wird geleert, damit der User eine neue Notiz eingeben kann.
+
+saveToLocalStorage();
+// Notizen im localStorage speichern
 }
+
+// Daten im localStorage speichern:
+// Die arrays notesTitles und notes im localStorage speichern
+function saveToLocalStorage() {
+    localStorage.setItem("notesTitles", JSON.stringify(notesTitles));
+    localStorage.setItem("notes", JSON.stringify(notes));
+}
+
+// Daten aus dem localStorage holen:
+function getFromLocalStorage() {
+    let storedTitles = JSON.parse(localStorage.getItem("notesTitles"));
+    let storedNotes = JSON.parse(localStorage.getItem("notes"));
+    if (storedTitles && storedNotes) {
+        notesTitles = storedTitles;
+        notes = storedNotes;
+    }
+}
+// Daten aus dem localStorage holen, wenn die Seite geladen wird
+getFromLocalStorage();
+renderNotesTitles();
+renderNotes();
+
 
 // 6. notizen löschen
 // Funktion deleteNote wird aufgerufen, wenn der User eine Notiz löschen möchte.
@@ -93,8 +135,6 @@ function deleteTrashNote(indexTrashNote) {
     trashNotes.splice(indexTrashNote, 1); // Ich splice die Notiz aus dem array trashNotes.
     renderTrashNotes(); // Die Funktion renderTrashNotes() wird aufgerufen, damit die Notiz nicht mehr im Papierkorb angezeigt wird.
 }
-
-
 
 
 // notizen Archivieren
