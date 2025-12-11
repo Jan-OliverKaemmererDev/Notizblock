@@ -34,9 +34,23 @@ for (let indexNote = 0; indexNote < notes.length; indexNote++) {
     contentRef.innerHTML += getNoteTamplate(indexNote);
 // Notizen im localStorage speichern
 }
+
+renderTrashNotesTitles();
+renderTrashNotes();
 }
 
 // Papierkorb Bereich
+// Funktion zum Rendern der Titel der gelöschten Notizen im Papierkorb
+function renderTrashNotesTitles() {
+    let trashContentRef = document.getElementById('trash_content');
+    trashContentRef.innerHTML = "";
+
+    for (let indexTrashNotesTitels = 0; indexTrashNotesTitels < trashNotesTitles.length; indexTrashNotesTitels++) {
+        trashContentRef.innerHTML += getTrashNoteTemplate(indexTrashNotesTitels);
+    }
+}
+
+
 // Funktion zum Rendern der gelöschten Notizen im Papierkorb
 function renderTrashNotes() {
     let trashContentRef = document.getElementById('trash_content'); // Referenz zum div mit der id "trash_content"
@@ -120,7 +134,7 @@ function getFromLocalStorage() {
 getFromLocalStorage();
 renderNotesTitles();
 renderNotes();
-renderTrashNotes();
+
 
 
 // 6. notizen löschen
@@ -142,8 +156,11 @@ function pushToTrash(indexNote) {
 
 // Notiz endgültig löschen
 function deleteTrashNote(indexTrashNote) {
+    trashNotesTitles.splice(indexTrashNote, 1); // Ich splice den Titel der Notiz aus dem array trashNotesTitles.
     trashNotes.splice(indexTrashNote, 1); // Ich splice die Notiz aus dem array trashNotes.
     renderTrashNotes(); // Die Funktion renderTrashNotes() wird aufgerufen, damit die Notiz nicht mehr im Papierkorb angezeigt wird.
+    renderTrashNotesTitles(); // Die Funktion renderTrashNotesTitles() wird aufgerufen, damit der Titel der Notiz nicht mehr im Papierkorb angezeigt wird.
+    saveToLocalStorage(); // Notizen im localStorage speichern
 }
 
 
