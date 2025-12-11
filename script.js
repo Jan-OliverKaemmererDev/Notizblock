@@ -97,6 +97,8 @@ saveToLocalStorage();
 function saveToLocalStorage() {
     localStorage.setItem("notesTitles", JSON.stringify(notesTitles));
     localStorage.setItem("notes", JSON.stringify(notes));
+    localStorage.setItem("trashNotesTitles", JSON.stringify(trashNotesTitles));
+    localStorage.setItem("trashNotes", JSON.stringify(trashNotes));
 }
 
 // Daten aus dem localStorage holen:
@@ -107,11 +109,18 @@ function getFromLocalStorage() {
         notesTitles = storedTitles;
         notes = storedNotes;
     }
+    let storedTrashTitles = JSON.parse(localStorage.getItem("trashNotesTitles"));
+    let storedTrashNotes = JSON.parse(localStorage.getItem("trashNotes"));
+    if (storedTrashTitles && storedTrashNotes) {
+        trashNotesTitles = storedTrashTitles;
+        trashNotes = storedTrashNotes;
+    }
 }
 // Daten aus dem localStorage holen, wenn die Seite geladen wird
 getFromLocalStorage();
 renderNotesTitles();
 renderNotes();
+renderTrashNotes();
 
 
 // 6. notizen löschen
@@ -128,6 +137,7 @@ function pushToTrash(indexNote) {
     // Eingabe anzeigen lassen:
     renderNotes(); // Die Funktion renderNotes() wird aufgerufen, damit die gelöschte Notiz nicht mehr angezeigt wird.
     renderTrashNotes(); // Die Funktion renderTrashNotes() wird aufgerufen, damit die gelöschte Notiz im Papierkorb angezeigt wird.
+    saveToLocalStorage(); // Notizen im localStorage speichern
 }
 
 // Notiz endgültig löschen
