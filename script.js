@@ -132,8 +132,6 @@ function getFromLocalStorage() {
 }
 // Daten aus dem localStorage holen, wenn die Seite geladen wird
 getFromLocalStorage();
-renderNotesTitles();
-renderNotes();
 
 
 
