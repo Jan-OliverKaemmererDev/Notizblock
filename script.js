@@ -164,16 +164,6 @@ function getFromLocalStorage() {
 // Daten aus dem localStorage holen, wenn die Seite geladen wird
 getFromLocalStorage();
 
-function pushFromArchiveToNote(indexArchiveNote) {
-    let note = archiveNotes.splice(indexArchiveNote, 1); // Ich splice die Notiz aus dem array archiveNotes und speichere sie in der Variable note.
-    notes.push(note[0]); // Die wiederhergestellte Notiz wird dem array notes hinzugefügt.
-    let noteTitle = archiveNotesTitles.splice(indexArchiveNote, 1);
-    notesTitles.push(noteTitle[0]); // Die wiederhergestellte Notiz wird dem array notesTitels hinzugefügt.
-    renderArchiveNotes(); // Die Funktion renderArchiveNotes() wird aufgerufen, damit die wiederhergestellte Notiz nicht mehr im Archiv angezeigt wird.
-    renderNotes(); // Die Funktion renderNotes() wird aufgerufen, damit die wiederhergestellte Notiz im Notizbereich angezeigt wird.
-    saveToLocalStorage(); // Notizen im localStorage speichern
-}
-
 function pushToArchiveNote(indexNote) {
     let archiveNote = notes.splice(indexNote, 1); // Ich splice die Notiz aus dem array notes und speichere sie in der Variable archiveNote.
     archiveNotes.push(archiveNote[0]); // Die archivierte Notiz wird dem array archiveNotes hinzugefügt.
@@ -181,6 +171,16 @@ function pushToArchiveNote(indexNote) {
     archiveNotesTitles.push(archiveNoteTitle[0]); // Die archivierte Notiz wird dem array archiveNotesTitels hinzugefügt.
     renderNotes(); // Die Funktion renderNotes() wird aufgerufen, damit die archivierte Notiz nicht mehr angezeigt wird.
     renderArchiveNotes(); // Die Funktion renderArchiveNotes() wird aufgerufen, damit die archivierte Notiz im Archiv angezeigt wird.
+    saveToLocalStorage(); // Notizen im localStorage speichern
+}
+
+function pushFromArchiveToNote(indexArchiveNote) {
+    let note = archiveNotes.splice(indexArchiveNote, 1); // Ich splice die Notiz aus dem array archiveNotes und speichere sie in der Variable note.
+    notes.push(note[0]); // Die wiederhergestellte Notiz wird dem array notes hinzugefügt.
+    let noteTitle = archiveNotesTitles.splice(indexArchiveNote, 1);
+    notesTitles.push(noteTitle[0]); // Die wiederhergestellte Notiz wird dem array notesTitels hinzugefügt.
+    renderArchiveNotes(); // Die Funktion renderArchiveNotes() wird aufgerufen, damit die wiederhergestellte Notiz nicht mehr im Archiv angezeigt wird.
+    renderNotes(); // Die Funktion renderNotes() wird aufgerufen, damit die wiederhergestellte Notiz im Notizbereich angezeigt wird.
     saveToLocalStorage(); // Notizen im localStorage speichern
 }
 
