@@ -3,12 +3,13 @@
 let notesTitles = []; // Titel der Notizen
 let notes = []; // Notizen
 
+// Archiv für archivierte Notizen
 let archiveNotesTitles = []; // Titel der archivierten Notizen
 let archiveNotes = []; // Archivierte Notizen
 
-let trashNotesTitles = []; // Titel der gelöschten Notizen
 // Papierkorb für gelöschte Notizen
-let trashNotes = [];
+let trashNotesTitles = []; // Titel der gelöschten Notizen
+let trashNotes = []; // Gelöschte Notizen
 
 function renderNotesTitles() {
     let contentRef = document.getElementById('content');
