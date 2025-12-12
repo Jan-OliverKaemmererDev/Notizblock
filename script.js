@@ -229,8 +229,3 @@ function deleteTrashNote(indexTrashNote) {
     renderTrashNotesTitles(); // Die Funktion renderTrashNotesTitles() wird aufgerufen, damit der Titel der Notiz nicht mehr im Papierkorb angezeigt wird.
     saveToLocalStorage(); // Notizen im localStorage speichern
 }
-
-
-// notizen Archivieren
-
-// notizen wiederherstellen
