@@ -83,24 +83,7 @@ function renderTrashNotes() {
 }
 
 
-// 4. Wie werden sie angezeigt?
-// Die Funktion getNoteTemplate bekommt eine Variable note übergeben und gibt einen HTML-String zurück.
-function getNoteTamplate(indexNote) {
-    // Der HTML-String wird zurückgegeben:
-    // Der Wert der Notiz wird aus dem array notes mit dem übergebenen indexNote ausgelesen.
-    // Ein button mit onclick wurde hinzugefügt, der die Funktion pushToTrash mit dem index der Notiz aufruft.
-    // Beim Klicken auf den Button wird die entsprechende Notiz gelöscht.
-    return `<p>+ title: ${notesTitles[indexNote]} -> ${notes[indexNote]}<button onclick="pushToArchiveNote(${indexNote})">A</button><button onclick="pushToTrash(${indexNote})">X</button></p>`; // Ein button mit X wurde hinzugefügt, um die Notiz zu löschen.
-}
 
-function getArchiveNoteTemplate(indexArchiveNote) {
-    return `<p>+ title: ${archiveNotesTitles[indexArchiveNote]} -> ${archiveNotes[indexArchiveNote]}<button onclick="pushFromArchiveToNote(${indexArchiveNote})">N</button><button onclick="pushFromArchiveToTrash(${indexArchiveNote})">X</button></p>`;
-}
-
-// Funktion zum Generieren des HTML-Strings für eine gelöschte Notiz im Papierkorb
-function getTrashNoteTemplate(indexTrashNote) {
-    return `<p>+ title: ${trashNotesTitles[indexTrashNote]} -> ${trashNotes[indexTrashNote]}<button onclick="pushFromTrashToNote(${indexTrashNote})">N</button><button onclick="deleteTrashNote(${indexTrashNote})">X</button></p>`;
-}
 
 // 5. notizen hinzufügen
 // Eingabe vom User definieren:
