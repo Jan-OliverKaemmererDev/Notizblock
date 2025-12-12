@@ -3,6 +3,9 @@
 let notesTitles = []; // Titel der Notizen
 let notes = []; // Notizen
 
+let archiveNotesTitles = []; // Titel der archivierten Notizen
+let archiveNotes = []; // Archivierte Notizen
+
 let trashNotesTitles = []; // Titel der gelöschten Notizen
 // Papierkorb für gelöschte Notizen
 let trashNotes = [];
@@ -39,6 +42,22 @@ renderTrashNotesTitles();
 renderTrashNotes();
 }
 
+function renderArchiveNotesTitles() {
+    let archiveContentRef = document.getElementById('archive_content');
+    archiveContentRef.innerHTML = "";
+    for (let indexArchiveNotesTitels = 0; indexArchiveNotesTitels < archiveNotesTitles.length; indexArchiveNotesTitels++) {
+        archiveContentRef.innerHTML += getArchiveNoteTemplate(indexArchiveNotesTitels);
+    }
+}
+
+function renderArchiveNotes() {
+    let archiveContentRef = document.getElementById('archive_content'); 
+    archiveContentRef.innerHTML = "";
+    for (let indexArchiveNote = 0; indexArchiveNote < archiveNotes.length; indexArchiveNote++) {
+        archiveContentRef.innerHTML += getArchiveNoteTemplate(indexArchiveNote);
+    }
+}
+
 // Papierkorb Bereich
 // Funktion zum Rendern der Titel der gelöschten Notizen im Papierkorb
 function renderTrashNotesTitles() {
@@ -70,12 +89,16 @@ function getNoteTamplate(indexNote) {
     // Der Wert der Notiz wird aus dem array notes mit dem übergebenen indexNote ausgelesen.
     // Ein button mit onclick wurde hinzugefügt, der die Funktion pushToTrash mit dem index der Notiz aufruft.
     // Beim Klicken auf den Button wird die entsprechende Notiz gelöscht.
-    return `<p>+ title: ${notesTitles[indexNote]} -> ${notes[indexNote]}<button onclick="pushToTrash(${indexNote})">X</button></p>`; // Ein button mit X wurde hinzugefügt, um die Notiz zu löschen.
+    return `<p>+ title: ${notesTitles[indexNote]} -> ${notes[indexNote]}<button onclick="pushToArchiveNote(${indexNote})">A</button><button onclick="pushToTrash(${indexNote})">X</button></p>`; // Ein button mit X wurde hinzugefügt, um die Notiz zu löschen.
+}
+
+function getArchiveNoteTemplate(indexArchiveNote) {
+    return `<p>+ title: ${archiveNotesTitles[indexArchiveNote]} -> ${archiveNotes[indexArchiveNote]}<button onclick="pushFromArchiveToNote(${indexArchiveNote})">N</button><button onclick="pushFromArchiveToTrash(${indexArchiveNote})">X</button></p>`;
 }
 
 // Funktion zum Generieren des HTML-Strings für eine gelöschte Notiz im Papierkorb
 function getTrashNoteTemplate(indexTrashNote) {
-    return `<p>+ title: ${trashNotesTitles[indexTrashNote]} -> ${trashNotes[indexTrashNote]}<button onclick="deleteTrashNote(${indexTrashNote})">X</button></p>`;
+    return `<p>+ title: ${trashNotesTitles[indexTrashNote]} -> ${trashNotes[indexTrashNote]}<button onclick="pushFromTrashToNote(${indexTrashNote})">N</button><button onclick="deleteTrashNote(${indexTrashNote})">X</button></p>`;
 }
 
 // 5. notizen hinzufügen
@@ -111,6 +134,8 @@ saveToLocalStorage();
 function saveToLocalStorage() {
     localStorage.setItem("notesTitles", JSON.stringify(notesTitles));
     localStorage.setItem("notes", JSON.stringify(notes));
+    localStorage.setItem("archiveNotesTitles", JSON.stringify(archiveNotesTitles));
+    localStorage.setItem("archiveNotes", JSON.stringify(archiveNotes));
     localStorage.setItem("trashNotesTitles", JSON.stringify(trashNotesTitles));
     localStorage.setItem("trashNotes", JSON.stringify(trashNotes));
 }
@@ -123,6 +148,12 @@ function getFromLocalStorage() {
         notesTitles = storedTitles;
         notes = storedNotes;
     }
+    let storedArchiveTitles = JSON.parse(localStorage.getItem("archiveNotesTitles"));
+    let storedArchiveNotes = JSON.parse(localStorage.getItem("archiveNotes"));
+    if (storedArchiveTitles && storedArchiveNotes) {
+        archiveNotesTitles = storedArchiveTitles;
+        archiveNotes = storedArchiveNotes;
+    }
     let storedTrashTitles = JSON.parse(localStorage.getItem("trashNotesTitles"));
     let storedTrashNotes = JSON.parse(localStorage.getItem("trashNotes"));
     if (storedTrashTitles && storedTrashNotes) {
@@ -133,7 +164,35 @@ function getFromLocalStorage() {
 // Daten aus dem localStorage holen, wenn die Seite geladen wird
 getFromLocalStorage();
 
+function pushFromArchiveToNote(indexArchiveNote) {
+    let note = archiveNotes.splice(indexArchiveNote, 1); // Ich splice die Notiz aus dem array archiveNotes und speichere sie in der Variable note.
+    notes.push(note[0]); // Die wiederhergestellte Notiz wird dem array notes hinzugefügt.
+    let noteTitle = archiveNotesTitles.splice(indexArchiveNote, 1);
+    notesTitles.push(noteTitle[0]); // Die wiederhergestellte Notiz wird dem array notesTitels hinzugefügt.
+    renderArchiveNotes(); // Die Funktion renderArchiveNotes() wird aufgerufen, damit die wiederhergestellte Notiz nicht mehr im Archiv angezeigt wird.
+    renderNotes(); // Die Funktion renderNotes() wird aufgerufen, damit die wiederhergestellte Notiz im Notizbereich angezeigt wird.
+    saveToLocalStorage(); // Notizen im localStorage speichern
+}
 
+function pushToArchiveNote(indexNote) {
+    let archiveNote = notes.splice(indexNote, 1); // Ich splice die Notiz aus dem array notes und speichere sie in der Variable archiveNote.
+    archiveNotes.push(archiveNote[0]); // Die archivierte Notiz wird dem array archiveNotes hinzugefügt.
+    let archiveNoteTitle = notesTitles.splice(indexNote, 1);
+    archiveNotesTitles.push(archiveNoteTitle[0]); // Die archivierte Notiz wird dem array archiveNotesTitels hinzugefügt.
+    renderNotes(); // Die Funktion renderNotes() wird aufgerufen, damit die archivierte Notiz nicht mehr angezeigt wird.
+    renderArchiveNotes(); // Die Funktion renderArchiveNotes() wird aufgerufen, damit die archivierte Notiz im Archiv angezeigt wird.
+    saveToLocalStorage(); // Notizen im localStorage speichern
+}
+
+function pushFromArchiveToTrash(indexArchiveNote) {
+    let trashNote = archiveNotes.splice(indexArchiveNote, 1); // Ich splice die Notiz aus dem array archiveNotes und speichere sie in der Variable trashNote.
+    trashNotes.push(trashNote[0]); // Die gelöschte Notiz wird dem array trashNotes hinzugefügt.
+    let trashNoteTitle = archiveNotesTitles.splice(indexArchiveNote, 1);
+    trashNotesTitles.push(trashNoteTitle[0]); // Die gelöschte Notiz wird dem array trashNotesTitels hinzugefügt.
+    renderArchiveNotes(); // Die Funktion renderArchiveNotes() wird aufgerufen, damit die gelöschte Notiz nicht mehr im Archiv angezeigt wird.
+    renderTrashNotes(); // Die Funktion renderTrashNotes() wird aufgerufen, damit die gelöschte Notiz im Papierkorb angezeigt wird.
+    saveToLocalStorage(); // Notizen im localStorage speichern
+}
 
 // 6. notizen löschen
 // Funktion deleteNote wird aufgerufen, wenn der User eine Notiz löschen möchte.
@@ -149,6 +208,16 @@ function pushToTrash(indexNote) {
     // Eingabe anzeigen lassen:
     renderNotes(); // Die Funktion renderNotes() wird aufgerufen, damit die gelöschte Notiz nicht mehr angezeigt wird.
     renderTrashNotes(); // Die Funktion renderTrashNotes() wird aufgerufen, damit die gelöschte Notiz im Papierkorb angezeigt wird.
+    saveToLocalStorage(); // Notizen im localStorage speichern
+}
+
+function pushFromTrashToNote(indexTrashNote) {
+    let note = trashNotes.splice(indexTrashNote, 1); // Ich splice die Notiz aus dem array trashNotes und speichere sie in der Variable note.
+    notes.push(note[0]); // Die wiederhergestellte Notiz wird dem array notes hinzugefügt.
+    let noteTitle = trashNotesTitles.splice(indexTrashNote, 1);
+    notesTitles.push(noteTitle[0]); // Die wiederhergestellte Notiz wird dem array notesTitels hinzugefügt.
+    renderTrashNotes(); // Die Funktion renderTrashNotes() wird aufgerufen, damit die wiederhergestellte Notiz nicht mehr im Papierkorb angezeigt wird.
+    renderNotes(); // Die Funktion renderNotes() wird aufgerufen, damit die wiederhergestellte Notiz im Notizbereich angezeigt wird.
     saveToLocalStorage(); // Notizen im localStorage speichern
 }
 
