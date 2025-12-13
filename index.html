@@ -15,19 +15,25 @@
 </head>
 <body onload="renderNotes()">
     <h1>Notizblock</h1>
-    <input id="title_input" type="text" placeholder="Titel der Notiz">
-    <input id="note_input" type="text" placeholder="Deine Notiz">
-    <button onclick="addNote()">Notiz speichern</button>
+    <br>
+    <section class="input_area">
+        <input id="title_input" type="text" placeholder="Titel der Notiz">
+        <br><br>
+        <input id="note_input" type="text" placeholder="Deine Notiz">
+        <br><br>
+        <button onclick="addNote()">Notiz speichern</button>
+        <br><br>
+    </section>
     <!-- Neue Notizen -->
      <h2>Notizen</h2>
-    <div id="content"></div>
+    <div class="content" id="content"></div>
     
     <!-- Archiv Bereich -->
     <h2>Archiv</h2>
-    <div id="archive_content"></div>
+    <div class="archive_content" id="archive_content"></div>
 
     <!-- Papierkorb Bereich -->
      <h2>Papierkorb</h2>
-    <div id="trash_content"></div>
+    <div class="trash_content" id="trash_content"></div>
 </body>
 </html>

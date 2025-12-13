@@ -41,6 +41,8 @@ for (let indexNote = 0; indexNote < notes.length; indexNote++) {
 
 renderTrashNotesTitles();
 renderTrashNotes();
+renderArchiveNotesTitles();
+renderArchiveNotes();
 }
 
 function renderArchiveNotesTitles() {
@@ -91,26 +93,33 @@ function renderTrashNotes() {
 function addNote() {
     let titleInputRef = document.getElementById('title_input'); // Die Variable titleInputRef bekommt das Input-Feld mit der id "title_input"
     // Eingabe auslesen:
-    let titleInput = titleInputRef.value; // Die Variable titleInput bekommt den Wert des Input-Felds durch .value
-    notesTitles.push(titleInput); // Die Eingabe wird dem Array notesTitles hinzugefügt.
-    titleInputRef.value = ""; // Das Input-Feld des Titels wird geleert, damit der User einen neuen Titel eingeben kann.
+    let titleInput = titleInputRef.value.trim(); // Die Variable titleInput bekommt den Wert des Input-Felds durch .value. trim() entfernt Leerzeichen am Anfang und Ende der Eingabe.
     
     let noteInputRef = document.getElementById('note_input'); // Die Variable noteInputRef bekommt das Input-Feld mit der id "note_input"
+    
     // Eingabe auslesen:
-    let noteInput = noteInputRef.value; // Die Variable noteInput bekommt den Wert des Input-Felds durch .value
+    let noteInput = noteInputRef.value.trim(); // Die Variable noteInput bekommt den Wert des Input-Felds durch .value
     // Referenzen zu den HTML-Elementen und das was man dann damit maccht, sollte man voneinander trennen.
 
+    // Überprüfung: Sind Titel oder Notiz leer?
+    if (titleInput === "" || noteInput === "") {
+        alert("Bitte füllen Sie sowohl den Titel als auch das Notizfeld aus.");
+        return; // Die Funktion wird hier abgebrochen, wenn Felder leer sind
+    }
+    
+    notesTitles.push(titleInput); // Die Eingabe wird dem Array notesTitles hinzugefügt.
     // Eingabe speichern (den array notes hinzufügen):
     notes.push(noteInput); // Die Eingabe wird dem Array notes hinzugefügt.
+
+    titleInputRef.value = ""; // Das Input-Feld des Titels wird geleert, damit der User einen neuen Titel eingeben kann.
+    noteInputRef.value = ""; // Das Input-Feld wird geleert, damit der User eine neue Notiz eingeben kann.
 
     // Eingabe anzeigen lassen:
     renderNotesTitles(); // Die Funktion renderNotesTitles() wird aufgerufen, damit der Titel der neuen Notiz angezeigt wird.
     renderNotes(); // Die Funktion renderNotes() wird aufgerufen, damit die neue Notiz angezeigt wird.
 
-    noteInputRef.value = ""; // Das Input-Feld wird geleert, damit der User eine neue Notiz eingeben kann.
-
-saveToLocalStorage();
-// Notizen im localStorage speichern
+    saveToLocalStorage();
+    // Notizen im localStorage speichern
 }
 
 // Daten im localStorage speichern:
