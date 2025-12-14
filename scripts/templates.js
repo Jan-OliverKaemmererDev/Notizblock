@@ -10,8 +10,8 @@ function getNoteTamplate(indexNote) {
         <h3>${notesTitles[indexNote]}</h3>
         <p>${notes[indexNote]}</p>
         <div>
-            <button class="btn" onclick="pushToArchiveNote(${indexNote})">A</button>
-            <button class="btn" onclick="pushToTrash(${indexNote})">X</button>
+            <button class="btn" onclick="pushToArchiveNote(${indexNote})"><strong>A</strong></button>
+            <button class="btn" onclick="pushToTrash(${indexNote})"><strong>X</strong></button>
         </div>
     </div>
     `;
@@ -23,8 +23,8 @@ function getArchiveNoteTemplate(indexArchiveNote) {
         <h3>${archiveNotesTitles[indexArchiveNote]}</h3>
         <p>${archiveNotes[indexArchiveNote]}</p>
         <div>
-            <button class="btn" onclick="pushFromArchiveToNote(${indexArchiveNote})">N</button>
-            <button class="btn" onclick="pushFromArchiveToTrash(${indexArchiveNote})">X</button>
+            <button class="btn" onclick="pushFromArchiveToNote(${indexArchiveNote})"><strong>N</strong></button>
+            <button class="btn" onclick="pushFromArchiveToTrash(${indexArchiveNote})"><strong>X</strong></button>
         </div>
     </div>
     `;
@@ -37,8 +37,8 @@ function getTrashNoteTemplate(indexTrashNote) {
         <h3>${trashNotesTitles[indexTrashNote]}</h3>
         <p>${trashNotes[indexTrashNote]}</p>
         <div>
-            <button onclick="pushFromTrashToNote(${indexTrashNote})" class="btn" >N</button>
-            <button onclick="deleteTrashNote(${indexTrashNote})" class="btn" >X</button>
+            <button onclick="pushFromTrashToNote(${indexTrashNote})" class="btn" ><strong>N</strong></button>
+            <button onclick="deleteTrashNote(${indexTrashNote})" class="btn" ><strong>X</strong></button>
         </div>
     </div>
     `;
